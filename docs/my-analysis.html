@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Bridget Hennessy" />
+
+
+<title>Lab 1: Distance to Natural Landmarks and Trails in Boulder, CO</title>
+
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">About</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">About</a>
+</li>
+<li>
+  <a href="analyses.html">Analyses</a>
+</li>
+<li>
+  <a href="contact.html">Contact</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 1: Distance to Natural Landmarks and
+Trails in Boulder, CO</h1>
+<h4 class="author">Bridget Hennessy</h4>
+
+</div>
+
+
+<div id="lab-1---creating-an-r-markdown-file" class="section level2">
+<h2>Lab 1 - Creating An R-Markdown File</h2>
+<div id="loading-libraries-for-analysis" class="section level4">
+<h4>Loading Libraries for Analysis</h4>
+<pre class="r"><code>library(ggplot2)
+library(sf)
+library(tidyverse)
+library(dplyr)
+library(tmap)
+library(viridis)
+library(gridExtra)</code></pre>
+</div>
+<div id="pulling-in-data" class="section level4">
+<h4>Pulling In Data</h4>
+<div
+id="the-boulder-dataset-is-a-spatial-point-dateset-of-the-open-spaces-and-mountain-parks-of-boulder-co.-the-variable-db-is-locations-of-where-photos-were-taken-with-flickr-and-panramio.-the-dataset-also-includes-variables-related-to-distance-of-which-trailh_dis-and-natmrk_dis-will-be-used-in-this-analysis-representing-the-distance-to-trails-and-distance-to-natural-landmarks-respectively."
+class="section level6">
+<h6>The “boulder” dataset is a spatial point dateset of the Open Spaces
+and Mountain Parks of Boulder, CO. The variable “DB” is locations of
+where photos were taken with Flickr and Panramio. The dataset also
+includes variables related to distance, of which “TrailH_Dis” and
+“NatMrk_Dis” will be used in this analysis, representing the distance to
+trails and distance to natural landmarks, respectively.</h6>
+<pre class="r"><code>boulder &lt;- st_read(&quot;~/Desktop/648_Lab1/648_Lab1/BoulderSocialMedia&quot;)</code></pre>
+<pre><code>## Reading layer `BoulderSocialMedia&#39; from data source 
+##   `/Users/bridgethennessy/Desktop/648_Lab1/648_Lab1/BoulderSocialMedia&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 55519 features and 12 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: -788775 ymin: 1917813 xmax: -780555 ymax: 1930053
+## Projected CRS: NAD_1983_Albers</code></pre>
+<pre class="r"><code>boulder</code></pre>
+<pre><code>## Simple feature collection with 55519 features and 12 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: -788775 ymin: 1917813 xmax: -780555 ymax: 1930053
+## Projected CRS: NAD_1983_Albers
+## First 10 features:
+##            id     DB   extent Climb_dist TrailH_Dis NatMrk_Dis Trails_dis
+## 1  6517284333 Flickr 421678.2   1973.108   2368.567   2451.633   49.73422
+## 2  6517281191 Flickr 421678.2   1973.108   2368.567   2451.633   49.73422
+## 3  6517278961 Flickr 421678.2   1973.108   2368.567   2451.633   49.73422
+## 4  6517276295 Flickr 421678.2   1973.108   2368.567   2451.633   49.73422
+## 5  6517274727 Flickr 421678.2   1973.108   2368.567   2451.633   49.73422
+## 6  6517272539 Flickr 421678.2   1973.108   2368.567   2451.633   49.73422
+## 7  6517270109 Flickr 421678.2   1973.108   2368.567   2451.633   49.73422
+## 8  6516904527 Flickr 421678.2   1973.108   2368.567   2451.633   49.73422
+## 9  6516902971 Flickr 421678.2   1973.108   2368.567   2451.633   49.73422
+## 10 6516900761 Flickr 421678.2   1973.108   2368.567   2451.633   49.73422
+##    Bike_dis PrarDg_Dis PT_Elev Hydro_dis Street_dis                geometry
+## 1  1437.134   1942.125    2064   1359.75   193.9165 POINT (-786099 1929916)
+## 2  1437.134   1942.125    2064   1359.75   193.9165 POINT (-786099 1929916)
+## 3  1437.134   1942.125    2064   1359.75   193.9165 POINT (-786099 1929916)
+## 4  1437.134   1942.125    2064   1359.75   193.9165 POINT (-786099 1929916)
+## 5  1437.134   1942.125    2064   1359.75   193.9165 POINT (-786099 1929916)
+## 6  1437.134   1942.125    2064   1359.75   193.9165 POINT (-786099 1929916)
+## 7  1437.134   1942.125    2064   1359.75   193.9165 POINT (-786099 1929916)
+## 8  1437.134   1942.125    2064   1359.75   193.9165 POINT (-786099 1929916)
+## 9  1437.134   1942.125    2064   1359.75   193.9165 POINT (-786099 1929916)
+## 10 1437.134   1942.125    2064   1359.75   193.9165 POINT (-786099 1929916)</code></pre>
+</div>
+</div>
+<div id="data-clean-up" class="section level4">
+<h4>Data Clean-Up</h4>
+<div id="data-projection-and-visualization" class="section level5">
+<h5>Data Projection and Visualization</h5>
+<div
+id="in-this-code-chunk-i-transform-the-data-projection-and-visualize-the-two-distance-variables-of-interest"
+class="section level6">
+<h6>In this code chunk, I transform the data projection and visualize
+the two distance variables of interest</h6>
+<pre class="r"><code>boulder = st_transform(boulder, 26753) 
+ggplot() +
+    geom_sf(data =boulder,
+    fill = NA, alpha = .2) +
+    theme_bw()</code></pre>
+<p><img src="template-analysis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>ggplot() +
+    geom_sf(data =boulder, aes(color=NatMrk_Dis),
+    fill = NA, alpha = .2) +
+    theme_bw()</code></pre>
+<p><img src="template-analysis_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>ggplot() +
+    geom_sf(data =boulder, aes(color=TrailH_Dis),
+    fill = NA, alpha = .2) +
+    theme_bw()</code></pre>
+<p><img src="template-analysis_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+<pre class="r"><code>frequency_table &lt;- table(boulder$DB)
+print(frequency_table)</code></pre>
+<pre><code>## 
+##     Flickr OSMP_lands       Pano 
+##       6428      48644        447</code></pre>
+</div>
+</div>
+</div>
+<div id="data-analysis" class="section level4">
+<h4>Data Analysis</h4>
+<div id="create-a-scatterplot" class="section level5">
+<h5>Create a Scatterplot</h5>
+<div
+id="in-this-code-chunk-i-create-a-scatterplot-displaying-where-photos-are-taken-along-the-two-distance-variables.-this-scatterplot-shows-that-more-photos-are-taken-closer-to-walking-trails-and-natural-landmarks."
+class="section level6">
+<h6>In this code chunk, I create a Scatterplot displaying where photos
+are taken along the two distance variables. This scatterplot shows that
+more photos are taken closer to walking trails and natural
+landmarks.</h6>
+<pre class="r"><code>boulder_sub &lt;- boulder %&gt;% filter(DB %in% c(&quot;Flickr&quot;, &quot;Pano&quot;))
+
+ggplot(boulder_sub, aes(x = NatMrk_Dis, y = TrailH_Dis, color = DB)) +
+  geom_point() +
+  facet_wrap(~ DB) +
+  labs(title = &quot;Faceted Scatter Plot with Color by Group&quot;,
+       x = &quot;Distance to Natural Landmark&quot;,
+       y = &quot;Distance to Hiking Trail&quot;)</code></pre>
+<p><img src="template-analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+</div>
+<div id="create-a-geovisualization" class="section level5">
+<h5>Create a Geovisualization</h5>
+<div
+id="in-this-code-chunk-i-plot-the-distance-variables-next-to-each-other-to-compare-whether-the-natural-landmarks-are-near-hiking-trails-in-these-nature-areas.-underneath-i-plot-the-locations-of-photo-taking-opportunities-in-gray-and-white-to-not-overwhelm-the-maps-with-colors-overlaid-onto-the-distance-variables-to-see-where-photos-are-taken-in-the-park-with-the-distance-to-trails-and-distance-to-landmarks-in-mind.-the-majority-of-photos-are-taken-in-close-proximity-to-walking-trails-perhaps-as-hikers-do-not-want-to-leave-the-trails-to-take-photos.-there-are-also-many-natural-landmarks-that-are-close-to-trails-perhaps-as-these-trails-are-designed-to-take-hikers-to-these-areas-making-photo-opportunities-easier-there.-in-the-southwest-corner-of-the-boulder-location-there-seems-to-be-a-large-area-that-is-far-from-both-natural-landmarks-and-trails-where-very-few-pictures-are-taken."
+class="section level6">
+<h6>In this code chunk, I plot the distance variables next to each other
+to compare whether the natural landmarks are near hiking trails in these
+nature areas. Underneath, I plot the locations of photo-taking
+opportunities (in gray and white to not overwhelm the maps with colors)
+overlaid onto the distance variables to see where photos are taken in
+the park with the distance to trails and distance to landmarks in mind.
+The majority of photos are taken in close proximity to walking trails,
+perhaps as hikers do not want to leave the trails to take photos. There
+are also many natural landmarks that are close to trails, perhaps as
+these trails are designed to take hikers to these areas, making photo
+opportunities easier there. In the southwest corner of the Boulder
+location there seems to be a large area that is far from both natural
+landmarks and trails, where very few pictures are taken.</h6>
+<pre class="r"><code>p1 &lt;- ggplot() +
+  geom_sf(data = boulder, aes(color = NatMrk_Dis), fill = NA, alpha = 0.2) +
+  scale_colour_gradientn(colors = viridis::magma(10), name = &quot;NatMrk_Dis&quot;) +
+  labs(title = &quot;Distance to Natural Landmarks&quot;) +
+  theme(legend.position = &quot;right&quot;)
+
+p2 &lt;- ggplot() +
+  geom_sf(data = boulder, aes(color = TrailH_Dis), fill = NA, alpha = 0.2) +
+  scale_colour_gradientn(colors = viridis::magma(10), name = &quot;TrailH_Dis&quot;) +
+  labs(title = &quot;Distance to Trails&quot;) +
+  theme(legend.position = &quot;right&quot;)
+
+p3 &lt;- ggplot() +
+  geom_sf(data = boulder, aes(color = NatMrk_Dis), fill = NA, alpha = 0.2) +
+  scale_colour_gradientn(colors = viridis::magma(10), name = &quot;NatMrk_Dis&quot;) +
+  geom_sf(data = boulder_sub, aes(fill = DB), color = &quot;black&quot;, shape = 21, size = 0.8) +
+  scale_fill_manual(values = c(&quot;Flickr&quot; = &quot;white&quot;, &quot;Pano&quot; = &quot;gray&quot;), name = &quot;DB&quot;) +
+  labs(title = &quot;Distance to Natural Landmarks with Photo Locations&quot;) +
+  theme(legend.position = &quot;right&quot;)
+
+p4 &lt;- ggplot() +
+  geom_sf(data = boulder, aes(color = TrailH_Dis), fill = NA, alpha = 0.2) +
+  scale_colour_gradientn(colors = viridis::magma(10), name = &quot;TrailH_Dis&quot;) +
+  geom_sf(data = boulder_sub, aes(fill = DB), color = &quot;black&quot;, shape = 21, size = 0.8) +
+  scale_fill_manual(values = c(&quot;Flickr&quot; = &quot;white&quot;, &quot;Pano&quot; = &quot;gray&quot;), name = &quot;DB&quot;) +
+  labs(title = &quot;Distance to Trails and Photo Locations&quot;) +
+  theme(legend.position = &quot;right&quot;)
+
+gridExtra::grid.arrange(p1, p2, p3, p4, nrow = 2, ncol = 2)</code></pre>
+<p><img src="template-analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="responsereflection-to-lab-question" class="section level4">
+<h4>Response/Reflection to Lab Question</h4>
+<div
+id="an-open-data-science-approach-offers-significant-advantages-in-geography-by-enabling-broader-access.-in-this-weeks-reading-by-rob-kitchin-kitchin-notes-that-open-data-science-creates-opportunities-to-leverage-diverse-sources-such-as-crowdsourced-geographic-information-and-volunteered-data-e.g.-openstreetmap-to-help-answer-societal-questions.-this-openness-can-democratize-research-allowing-scholars-and-non-experts-to-participate-in-data-generation-interpretation-and-critique.-this-ultimately-expands-the-reach-and-impact-of-geographic-scholarship.-however-the-approach-also-brings-substantial-challenges.-open-data-may-contain-sensitive-information-raising-privacy-concerns-and-creating-ethical-considerations.-for-example-the-article-cites-using-social-media-data-to-analyze-election-campaigns.-use-of-such-data-raises-questions-about-consent-and-may-cause-misinterpretion-of-the-outcomes.-therefore-there-are-both-benefits-and-consequences-of-using-open-source-data-so-critical-reflection-and-ethical-methodologies-are-necessary."
+class="section level5">
+<h5>An open data science approach offers significant advantages in
+geography by enabling broader access. In this week’s reading by Rob
+Kitchin, Kitchin notes that open data science creates opportunities to
+leverage diverse sources, such as crowdsourced geographic information
+and volunteered data (e.g., OpenStreetMap), to help answer societal
+questions. This openness can democratize research, allowing scholars and
+non-experts to participate in data generation, interpretation, and
+critique. This ultimately expands the reach and impact of geographic
+scholarship. However, the approach also brings substantial challenges.
+Open data may contain sensitive information, raising privacy concerns
+and creating ethical considerations. For example, the article cites
+using social media data to analyze election campaigns. Use of such data
+raises questions about consent, and may cause misinterpretion of the
+outcomes. Therefore there are both benefits and consequences of using
+open source data, so critical reflection and ethical methodologies are
+necessary.</h5>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
